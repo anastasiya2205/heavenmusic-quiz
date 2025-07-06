@@ -112,62 +112,103 @@
     <div id="question-1">
       <div class="question">Какой инструмент вас интересует?</div>
       <div class="answers">
-        <button onclick="nextQuestion(2)">🎸 Гитара</button>
-        <button onclick="nextQuestion(2)">🎹 Клавишные</button>
-        <button onclick="nextQuestion(2)">🥁 Барабаны</button>
-        <button onclick="nextQuestion(2)">🎤 Вокал</button>
+        <button onclick="nextQuestion(2, 'Гитара')">🎸 Гитара</button>
+        <button onclick="nextQuestion(2, 'Клавишные')">🎹 Клавишные</button>
+        <button onclick="nextQuestion(2, 'Барабаны')">🥁 Барабаны</button>
+        <button onclick="nextQuestion(2, 'Вокал')">🎤 Вокал</button>
       </div>
     </div>
     <div id="question-2" class="hidden">
       <div class="question">Какую музыку вы хотите играть?</div>
       <div class="answers">
-        <button onclick="nextQuestion(3)">🎵 Поп</button>
-        <button onclick="nextQuestion(3)">🎸 Рок</button>
-        <button onclick="nextQuestion(3)">🎷 Джаз</button>
-        <button onclick="nextQuestion(3)">🎻 Классика</button>
+        <button onclick="nextQuestion(3, 'Поп')">🎵 Поп</button>
+        <button onclick="nextQuestion(3, 'Рок')">🎸 Рок</button>
+        <button onclick="nextQuestion(3, 'Джаз')">🎷 Джаз</button>
+        <button onclick="nextQuestion(3, 'Классика')">🎻 Классика</button>
       </div>
     </div>
     <div id="question-3" class="hidden">
       <div class="question">Когда вам удобно приходить на занятия?</div>
       <div class="answers">
-        <button onclick="nextQuestion(4)">📅 Утром</button>
-        <button onclick="nextQuestion(4)">📅 Днем</button>
-        <button onclick="nextQuestion(4)">📅 Вечером</button>
+        <button onclick="nextQuestion(4, 'Утром')">📅 Утром</button>
+        <button onclick="nextQuestion(4, 'Днем')">📅 Днем</button>
+        <button onclick="nextQuestion(4, 'Вечером')">📅 Вечером</button>
       </div>
     </div>
     <div id="question-4" class="hidden">
       <div class="question">Пожалуйста, оставьте ваши контакты</div>
-      <div id="contact-form">
-        <input 
-          type="text" 
-          id="name"
-          placeholder="Ваше имя" 
-          required
-          style="width:100%;padding:14px;font-size:1.1em;border-radius:12px;border:2px solid #6D28D9;margin-bottom:15px;"
-        >
-        <input 
-          type="tel" 
-          id="phone"
-          placeholder="Ваш телефон" 
-          required
-          style="width:100%;padding:14px;font-size:1.1em;border-radius:12px;border:2px solid #6D28D9;margin-bottom:20px;"
-        >
-        <button 
-          onclick="sendToTelegram()"
-          style="background:#6D28D9;color:white;width:100%;padding:16px;font-size:1.1em;border:none;border-radius:12px;cursor:pointer;transition:background 0.3s;"
-          onmouseover="this.style.background='#5B21B6'"
-          onmouseout="this.style.background='#6D28D9'"
-        >
-          Отправить заявку
-        </button>
-      </div>
+      <input
+        id="name"
+        type="text"
+        placeholder="Ваше имя"
+        class="input-field"
+        required
+      >
+      <input
+        id="phone"
+        type="tel"
+        placeholder="Ваш телефон"
+        class="input-field"
+        required
+      >
+      <button class="submit-btn" onclick="sendToTelegram()">Отправить заявку</button>
     </div>
     <div id="finish" class="hidden">
-      <div class="question">Спасибо! Мы скоро вам перезвоним.</div>
+      <div class="question">Спасибо! Мы свяжемся с вами в ближайшее время.</div>
     </div>
   </div>
 
   <script>
+    let selectedInstrument = "";
+    let selectedGenre = "";
+    let selectedTime = "";
+
+    function nextQuestion(num, answer = "") {
+      if (num === 2) selectedInstrument = answer;
+      if (num === 3) selectedGenre = answer;
+      if (num === 4) selectedTime = answer;
+
+      document.getElementById(`question-${num-1}`).classList.add('hidden');
+      document.getElementById(`question-${num}`).classList.remove('hidden');
+    }
+
+    async function sendToTelegram() {
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+
+      if (!name || !phone) {
+        alert("Пожалуйста, заполните имя и телефон!");
+        return;
+      }
+
+      const message = `📝 Новая заявка с квиза:
+Имя: ${name}
+Телефон: ${phone}
+Инструмент: ${selectedInstrument}
+Стиль: ${selectedGenre}
+Время: ${selectedTime}`;
+
+      const token = "7956956896:AAHnLEwntFLrLExrO6K07x_pCePmQ8Rdu3g";  // не забудь заменить при публикации
+      const chat_id = "331427868"; // твой id
+      const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+      try {
+        await fetch(url, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({
+            chat_id: chat_id,
+            text: message
+          })
+        });
+        document.getElementById("question-4").classList.add("hidden");
+        document.getElementById("finish").classList.remove("hidden");
+      } catch (error) {
+        alert("Ошибка отправки. Попробуйте позже.");
+        console.error(error);
+      }
+    }
+
     // слайдер
     let slideIndex = 0;
     showSlides();
@@ -180,49 +221,6 @@
       if (slideIndex > slides.length) { slideIndex = 1 }
       slides[slideIndex - 1].style.display = "block";
       setTimeout(showSlides, 4000);
-    }
-
-    // квиз
-    function nextQuestion(num) {
-      document.getElementById(`question-${num-1}`).classList.add('hidden');
-      document.getElementById(`question-${num}`).classList.remove('hidden');
-    }
-
-    function sendToTelegram() {
-      const name = document.getElementById("name").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      
-      if (!name || !phone) {
-        alert("Пожалуйста, заполните имя и телефон!");
-        return;
-      }
-      
-      const token = "7956956896:AAHnLEwntFLrLExrO6K07x_pCePmQ8Rdu3g";
-      const chat_id = "331427868";
-      const message = `📝 Новая заявка с квиза:\n\nИмя: ${name}\nТелефон: ${phone}`;
-      
-      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          chat_id: chat_id,
-          text: message
-        })
-      })
-      .then(response => {
-        if (response.ok) {
-          document.getElementById("question-4").classList.add("hidden");
-          document.getElementById("finish").classList.remove("hidden");
-        } else {
-          alert("Ошибка при отправке. Попробуйте снова.");
-        }
-      })
-      .catch(error => {
-        console.error(error);
-        alert("Ошибка сети. Попробуйте позже.");
-      });
     }
   </script>
 </body>
