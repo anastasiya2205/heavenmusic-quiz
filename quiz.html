@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Музыкальный квиз</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #6D28D9; /* насыщенный фиолетовый */
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .slider {
+      max-width: 800px;
+      height: 300px;
+      margin: 30px auto 10px auto;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .slide {
+      display: none;
+      height: 100%;
+    }
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .quiz-container {
+      background: #ffffff;
+      max-width: 600px;
+      margin: 20px auto 40px auto;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .question {
+      margin-bottom: 20px;
+      font-weight: bold;
+      font-size: 1.5em;
+      color: #6D28D9;
+      text-align: center;
+    }
+    .answers button {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 14px;
+      border: none;
+      background: #8B5CF6;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .answers button:hover {
+      background: #7C3AED;
+      transform: translateY(-2px);
+    }
+    .hidden {
+      display: none;
+    }
+    .input-field {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 1em;
+    }
+    .submit-btn {
+      background: #10B981;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1em;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .submit-btn:hover {
+      background: #059669;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Слайдер -->
+  <div class="slider">
+    <div class="slide fade">
+      <img src="https://i.ibb.co/ZRsZYbHr/Interior-Design-Bang-Olufsen-The-Music-Box-Jazz-Club.jpg" alt="slide 1" />
+    </div>
+    <div class="slide fade">
+      <img src="https://i.ibb.co/qL50xc29/7ac2f6d6a0409297a5a9e3821b667b4b.jpg" alt="slide 2" />
+    </div>
+    <div class="slide fade">
+      <img src="https://i.ibb.co/WW7KKwh3/fb11ab467790861dea01e73c62f8bc46.jpg" alt="slide 3" />
+    </div>
+    <div class="slide fade">
+      <img src="https://i.ibb.co/Gg2YMPF/diverse-happy-musicians-playing-together-53876-82740.jpg" alt="slide 4" />
+    </div>
+  </div>
+
+  <!-- Квиз -->
+  <div class="quiz-container">
+    <div id="question-1">
+      <div class="question">Какой инструмент вас интересует?</div>
+      <div class="answers">
+        <button onclick="nextQuestion(2)">🎸 Гитара</button>
+        <button onclick="nextQuestion(2)">🎹 Клавишные</button>
+        <button onclick="nextQuestion(2)">🥁 Барабаны</button>
+        <button onclick="nextQuestion(2)">🎤 Вокал</button>
+      </div>
+    </div>
+    <div id="question-2" class="hidden">
+      <div class="question">Какую музыку вы хотите играть?</div>
+      <div class="answers">
+        <button onclick="nextQuestion(3)">🎵 Поп</button>
+        <button onclick="nextQuestion(3)">🎸 Рок</button>
+        <button onclick="nextQuestion(3)">🎷 Джаз</button>
+        <button onclick="nextQuestion(3)">🎻 Классика</button>
+      </div>
+    </div>
+    <div id="question-3" class="hidden">
+      <div class="question">Когда вам удобно приходить на занятия?</div>
+      <div class="answers">
+        <button onclick="nextQuestion(4)">📅 Утром</button>
+        <button onclick="nextQuestion(4)">📅 Днем</button>
+        <button onclick="nextQuestion(4)">📅 Вечером</button>
+      </div>
+    </div>
+    <div id="question-4" class="hidden">
+    <div class="question">Пожалуйста, оставьте ваши контакты</div>
+<form 
+  action="https://formsubmit.co/baykina.anastasiya12@gmail.com" 
+  method="POST"
+>
+  <input 
+    type="text" 
+    name="name" 
+    placeholder="Ваше имя" 
+    required 
+    style="
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1em;
+      border-radius: 12px;
+      border: 2px solid #6D28D9;
+      margin-bottom: 15px;
+    "
+  >
+  <input 
+    type="tel" 
+    name="phone" 
+    placeholder="Ваш телефон" 
+    required 
+    style="
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1em;
+      border-radius: 12px;
+      border: 2px solid #6D28D9;
+      margin-bottom: 20px;
+    "
+  >
+  <button 
+    type="submit" 
+    style="
+      background: #6D28D9;
+      color: white;
+      width: 100%;
+      padding: 16px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+    "
+    onmouseover="this.style.background='#5B21B6'"
+    onmouseout="this.style.background='#6D28D9'"
+  >
+    Отправить заявку
+  </button>
+</form>
+
+
+         <div id="finish" class="hidden">
+      <div class="question">Спасибо! Мы свяжемся с вами в ближайшее время.</div>
+    </div>
+  </div>
+
+  <script>
+    // слайдер
+    let slideIndex = 0;
+    showSlides();
+    function showSlides() {
+      let slides = document.getElementsByClassName("slide");
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) { slideIndex = 1 }
+      slides[slideIndex - 1].style.display = "block";
+      setTimeout(showSlides, 4000);
+    }
+
+    // квиз
+    function nextQuestion(num) {
+      document.getElementById(`question-${num-1}`).classList.add('hidden');
+      document.getElementById(`question-${num}`).classList.remove('hidden');
+    }
+    function finishQuiz() {
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      if (!name || !phone) {
+        alert("Пожалуйста, заполните имя и телефон!");
+        return;
+      }
+      document.getElementById(`question-4`).classList.add('hidden');
+      document.getElementById(`finish`).classList.remove('hidden');
+      console.log("Данные отправлены:", name, phone);
+    }
+  </script>
+</body>
+</html>
